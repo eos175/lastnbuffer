@@ -90,24 +90,10 @@ func (b *Buffer[T]) Range(fn func(T) bool) {
 // If n <= 0, it returns nil.
 // If n is larger than the number of available elements, it returns all available elements.
 func (b *Buffer[T]) GetLastN(n int) []T {
-	b.mu.RLock()
-	defer b.mu.RUnlock()
-
 	if n <= 0 {
 		return nil
 	}
-
-	available := b.lenLocked()
-	if n > available {
-		n = available
-	}
-
-	out := make([]T, n)
-	start := b.write - uint64(n)
-	for i := 0; i < n; i++ {
-		out[i] = b.data[(start+uint64(i))&b.mask]
-	}
-	return out
+	return b.GetLastNIntoN(nil, n)
 }
 
 // GetLastNInto returns all available elements in chronological order using dst as storage.
