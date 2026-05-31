@@ -20,16 +20,16 @@ func TestNewZeroBecomesOne(t *testing.T) {
 	}
 }
 
-func TestSnapshotOrderAndOverwrite(t *testing.T) {
+func TestGetLastNIntoOrderAndOverwrite(t *testing.T) {
 	b := New[int](4)
 	for i := 1; i <= 6; i++ {
 		b.Push(i)
 	}
 
-	got := b.Snapshot()
+	got := b.GetLastNInto(nil)
 	want := []int{3, 4, 5, 6}
 	if !reflect.DeepEqual(got, want) {
-		t.Fatalf("Snapshot() = %v, want %v", got, want)
+		t.Fatalf("GetLastNInto(nil) = %v, want %v", got, want)
 	}
 }
 
@@ -155,7 +155,7 @@ func TestConcurrentPushAndRead(t *testing.T) {
 			for i := 0; i < perWriter; i++ {
 				b.Push(base*perWriter + i)
 				_ = b.Len()
-				_ = b.Snapshot()
+				_ = b.GetLastNInto(nil)
 				b.Range(func(int) bool { return true })
 			}
 		}(w)
@@ -167,7 +167,7 @@ func TestConcurrentPushAndRead(t *testing.T) {
 		t.Fatalf("Len() after concurrent writes = %d, want %d", got, want)
 	}
 
-	if len(b.Snapshot()) != b.Len() {
-		t.Fatalf("Snapshot length mismatch")
+	if len(b.GetLastNInto(nil)) != b.Len() {
+		t.Fatalf("GetLastNInto length mismatch")
 	}
 }

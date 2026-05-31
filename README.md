@@ -51,7 +51,6 @@ func main() {
 - `(*Buffer[T]).Push(v T)`
 - `(*Buffer[T]).Len() int`
 - `(*Buffer[T]).Cap() int`
-- `(*Buffer[T]).Snapshot() []T`
 - `(*Buffer[T]).GetLastN(n int) []T`
 - `(*Buffer[T]).GetLastNInto(dst []T) []T`
 - `(*Buffer[T]).Range(fn func(T) bool)`

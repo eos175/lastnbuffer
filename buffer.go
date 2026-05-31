@@ -50,25 +50,6 @@ func (b *Buffer[T]) Cap() int {
 	return len(b.data)
 }
 
-// Snapshot returns a copy of all available elements in chronological order
-// (oldest to newest).
-func (b *Buffer[T]) Snapshot() []T {
-	b.mu.RLock()
-	defer b.mu.RUnlock()
-
-	n := b.lenLocked()
-	if n == 0 {
-		return nil
-	}
-
-	out := make([]T, n)
-	start := b.write - uint64(n)
-	for i := 0; i < n; i++ {
-		out[i] = b.data[(start+uint64(i))&b.mask]
-	}
-	return out
-}
-
 // Range iterates elements in chronological order (oldest to newest).
 //
 // Iteration stops early when fn returns false.
