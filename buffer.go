@@ -24,14 +24,17 @@ func New[T any](n uint64) *Buffer[T] {
 	}
 }
 
-// Push appends one element to the buffer.
+// Push appends one element to the buffer and returns its sequence number.
 //
 // When the buffer is full, the oldest element is overwritten.
-func (b *Buffer[T]) Push(v T) {
+func (b *Buffer[T]) Push(v T) uint64 {
 	b.mu.Lock()
-	b.data[b.write&b.mask] = v
+	seq := b.write
+	b.data[seq&b.mask] = v
 	b.write++
 	b.mu.Unlock()
+
+	return seq
 }
 
 // Len returns how many elements are currently available.

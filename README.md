@@ -48,7 +48,7 @@ func main() {
 ## API
 
 - `New[T any](n uint64) *Buffer[T]`
-- `(*Buffer[T]).Push(v T)`
+- `(*Buffer[T]).Push(v T) uint64`
 - `(*Buffer[T]).Len() int`
 - `(*Buffer[T]).Cap() int`
 - `(*Buffer[T]).GetLastN(n int) []T`

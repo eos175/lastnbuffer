@@ -48,6 +48,16 @@ func TestLen(t *testing.T) {
 	}
 }
 
+func TestPushReturnsSeq(t *testing.T) {
+	b := New[int](4)
+
+	for i := 0; i < 10; i++ {
+		if got, want := b.Push(i), uint64(i); got != want {
+			t.Fatalf("Push(%d) = %d, want %d", i, got, want)
+		}
+	}
+}
+
 func TestRangeOrderAndEarlyStop(t *testing.T) {
 	b := New[int](8)
 	for i := 1; i <= 5; i++ {
